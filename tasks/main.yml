@@ -1,4 +1,9 @@
 ---
+- name: "Ensure python compose module installed"
+  pip:
+    name:
+    - 'docker-compose'
+
 - name: "Ensure deploy dir exists"
   file:
     path: "{{ testops_deploy_path }}"
