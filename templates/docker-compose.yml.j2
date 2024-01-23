@@ -59,7 +59,7 @@ services:
       options:
         max-size: "10mb"
 
- allure-uaa:
+  allure-uaa:
     restart: always
     image: ${ALLURE_REGISTRY}/${ALLURE_SLUG}/allure-uaa:${ALLURE_VERSION}
     container_name: allure-uaa
