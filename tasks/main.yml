@@ -31,6 +31,13 @@
     dest: "{{ testops_deploy_path }}/.env"
     mode: '0640'
 
+- name: "Login to qatools private registry"
+  docker_login:
+    registry: "{{ testops_docker.envs.ALLURE_REGISTRY }}"
+    username: "{{ testops_registry_username }}"
+    password: "{{ testops_registry_password }}"
+    reauthorize: yes
+
 - name: "Deploy testops"
   docker_compose:
     project_src: "{{ testops_deploy_path }}"
