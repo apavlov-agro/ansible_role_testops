@@ -1,8 +1,17 @@
 ---
+- name: "ensure prerequired software installed"
+  apt:
+    update_cache: yes
+    name:
+      - 'ca-certificates'
+      - 'gnupg'
+      - 'lsb-release'
+      - 'python3-pip'
+
 - name: "Ensure python compose module installed"
   pip:
     name:
-    - 'docker-compose'
+      - 'docker-compose'
 
 - name: "Ensure deploy dir exists"
   file:
