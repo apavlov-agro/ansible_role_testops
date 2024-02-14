@@ -1,0 +1,43 @@
+---
+- name: "ensure prerequired software installed"
+  apt:
+    update_cache: yes
+    name:
+      - 'ca-certificates'
+      - 'gnupg'
+      - 'lsb-release'
+      - 'python3-pip'
+
+- name: "Ensure python compose module installed"
+  pip:
+    name:
+      - 'docker-compose'
+
+- name: "Ensure deploy dir exists"
+  file:
+    path: "{{ testops_deploy_path }}"
+    state: directory
+    mode: "0740"
+
+- name: "Copy docker compose config"
+  template:
+    src: "docker-compose.yml.j2"
+    dest: "{{ testops_deploy_path }}/docker-compose.yml"
+    mode: '0640'
+
+- name: "Copy env"
+  template:
+    src: "env.j2"
+    dest: "{{ testops_deploy_path }}/.env"
+    mode: '0640'
+
+- name: "Login to qatools private registry"
+  docker_login:
+    registry: "{{ testops_docker.envs.ALLURE_REGISTRY }}"
+    username: "{{ testops_registry_username }}"
+    password: "{{ testops_registry_password }}"
+    reauthorize: yes
+
+- name: "Deploy testops"
+  docker_compose:
+    project_src: "{{ testops_deploy_path }}"
